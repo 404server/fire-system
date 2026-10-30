@@ -1,0 +1,98 @@
+{
+  "info": {
+    "name": "Fire Dispatch API",
+    "description": "Midterm project — служба приёма вызовов пожарной охраны (Spring Boot + PostgreSQL).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "callId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Create call (принять вызов)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('201 Created', () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set('callId', pm.response.json().id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"address\": \"Abay 10, кв. 25\",\n  \"callerPhone\": \"+7 777 123 45 67\",\n  \"description\": \"Горит проводка на кухне, сильный дым\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/calls", "host": ["{{baseUrl}}"], "path": ["api", "calls"] }
+      }
+    },
+    {
+      "name": "List calls",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/calls", "host": ["{{baseUrl}}"], "path": ["api", "calls"] }
+      }
+    },
+    {
+      "name": "List calls (filter by status)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/calls?status=NEW",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "calls"],
+          "query": [{ "key": "status", "value": "NEW", "description": "NEW | DISPATCHED | ON_SCENE | CLOSED" }]
+        }
+      }
+    },
+    {
+      "name": "Get call by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/calls/{{callId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "calls", "{{callId}}"]
+        }
+      }
+    },
+    {
+      "name": "Update call (назначить бригаду)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"address\": \"Abay 10, кв. 25\",\n  \"callerPhone\": \"+7 777 123 45 67\",\n  \"description\": \"Горит проводка на кухне, сильный дым\",\n  \"status\": \"DISPATCHED\",\n  \"brigade\": \"ПЧ-4, расчёт 2\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/calls/{{callId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "calls", "{{callId}}"]
+        }
+      }
+    },
+    {
+      "name": "Delete call",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/calls/{{callId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "calls", "{{callId}}"]
+        }
+      }
+    }
+  ]
+}

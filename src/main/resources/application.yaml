@@ -1,7 +1,6 @@
 spring:
   application:
     name: hw1
-  # datasource url/username/password come from SPRING_DATASOURCE_* env vars (see compose.yaml)
   jpa:
     hibernate:
       ddl-auto: update

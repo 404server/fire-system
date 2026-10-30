@@ -1,4 +1,4 @@
-package kz.hw1;
+package kz.hw1.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class FireAlarm {
+public class FireCall {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,15 @@ public class FireAlarm {
 
   private String address;
 
-  private double temperature = 20;
+  private String callerPhone;
+
+  private String description;
 
   @Enumerated(EnumType.STRING)
-  private AlarmStatus status = AlarmStatus.OK;
+  private CallStatus status = CallStatus.NEW;
 
-  private Instant updatedAt = Instant.now();
+  private String brigade;
+
+  private Instant createdAt = Instant.now();
 
 }
